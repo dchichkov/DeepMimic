@@ -2,8 +2,9 @@ BIN=Main
 OBJ_DIR = objs
 MKDIR = mkdir -p
 
-EIGEN_DIR = ../../libraries/eigen
-BULLET_INC_DIR = ../../libraries/bullet3/src
+EIGEN_DIR = /usr/include/eigen3
+BULLET_INC_DIR = /home/dmitry/github/bullet3.regular/src
+BULLET_LIB_DIR = /home/dmitry/github/bullet3.regular/build_cmake/src
 
 PYTHON_INC = /usr/include/python3.6m
 PYTHON_LIB = /usr/lib/ -lpython3.6m
@@ -14,7 +15,7 @@ INC = -I./ \
 
 LIBS = -lGLEW -lGL -lGLU -lglut -lBulletDynamics -lBulletCollision -lLinearMath -lm -lstdc++
 
-CC = clang++
+CC = g++
 CFLAGS = -std=c++11 -O3 -Wall -fPIC 
 
 SRC_DIRS = util/ \
@@ -43,7 +44,7 @@ print:
 python: $(OUT_DIRS) $(OBJ)
 	swig -c++ -python DeepMimicCore.i
 	$(CC) -c -g $(CFLAGS) $(INC) $(LIBS) DeepMimicCore.cpp DeepMimicCore_wrap.cxx -I$(PYTHON_INC)
-	$(CC) -shared $(CFLAGS) $(OBJ) $(LIBS) DeepMimicCore_wrap.o -o _DeepMimicCore.so -L$(PYTHON_LIB)
+	$(CC) -shared $(CFLAGS) $(OBJ) $(LIBS) DeepMimicCore_wrap.o -o _DeepMimicCore.so -L$(PYTHON_LIB) -L$(BULLET_LIB_DIR)/BulletDynamics -L$(BULLET_LIB_DIR)/BulletCollision -L$(BULLET_LIB_DIR)/LinearMath
 
 $(OBJ_DIR)/%.o: %.cpp
 	$(CC) -c -g $(CFLAGS) $(INC) -o $@ $<
